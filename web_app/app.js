@@ -1,6 +1,7 @@
 // Character Class: Represents a Character
 class Character {
-  constructor(first, last, clan) {
+  constructor(id, first, last, clan) {
+    this.id = id;
     this.firstName = first;
     this.lastName = last;
     this.clan = clan;
@@ -106,8 +107,18 @@ document.querySelector("#char-form").addEventListener("submit", e => {
   if (first == "" || last == "" || clan == "") {
     UI.showAlert("Please fill in all fields", "danger");
   } else {
+    // Generate an ID for the character
+    const chars = Store.getChars();
+    let id;
+    if (chars === null || chars.length === 0) {
+      id = 1;
+    } else {
+      const lastChar = chars[chars.length - 1];
+      id = lastChar.id + 1;
+    }
+
     // Instantiate Character
-    const char = new Character(first, last, clan);
+    const char = new Character(id, first, last, clan);
 
     // Add Character to UI
     UI.addCharToList(char);
